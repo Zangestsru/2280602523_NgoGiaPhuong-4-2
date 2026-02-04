@@ -101,6 +101,7 @@ function renderProducts(products) {
     products.forEach(function (product) {
         const categoryName = product.category ? product.category.name : 'N/A';
         const imageUrl = getImageUrl(product.images);
+        const description = product.description || 'No description';
 
         const tr = document.createElement('tr');
         tr.style.cursor = 'pointer';
@@ -112,11 +113,24 @@ function renderProducts(products) {
             <td><img src="${imageUrl}" alt="${product.title}" style="width:80px;height:80px;object-fit:cover;" onerror="this.src='https://via.placeholder.com/80x80?text=No+Image'"></td>
         `;
 
+        const trDesc = document.createElement('tr');
+        trDesc.className = 'description-row';
+        trDesc.style.display = 'none';
+        trDesc.innerHTML = `<td colspan="5" class="bg-light text-muted p-2"><strong>Description:</strong> ${description}</td>`;
+
+        tr.addEventListener('mouseenter', function () {
+            trDesc.style.display = 'table-row';
+        });
+        tr.addEventListener('mouseleave', function () {
+            trDesc.style.display = 'none';
+        });
+
         tr.addEventListener('click', function () {
             openDetailModal(product);
         });
 
         tbody.appendChild(tr);
+        tbody.appendChild(trDesc);
     });
 }
 
